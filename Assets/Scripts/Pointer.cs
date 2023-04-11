@@ -1,18 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Pointer : MonoBehaviour
 {
     //game manager
-    public GameManager gameManager;
-    void Start()
-    {
-        //find game manager
-        gameManager = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>();
-    }
+    public GameObject card;
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        gameManager.target = collision.gameObject;
+        card.GetComponent<Card>().current_target = collision.gameObject;
+        card.GetComponent<Card>().isAttacking = true;
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        card.GetComponent<Card>().current_target = null;
     }
 }
