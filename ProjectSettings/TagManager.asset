@@ -4,9 +4,11 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Attack
-  - Defense
   - Text
+  - PlayerDefense
+  - PlayerAttack
+  - EnemyDefense
+  - EnemyAttack
   layers:
   - Default
   - TransparentFX

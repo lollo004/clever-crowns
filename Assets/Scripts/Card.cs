@@ -21,7 +21,7 @@ public abstract class Card : MonoBehaviour
     
     //management
     public string team = ""; // player, enemy
-    public string position = ""; // hand, attack, defense
+    public string position = ""; // deck, hand, attack, defense
     public string _currentPos = ""; // hand, attack, defense
     public int placement = 0; //current placement (1-9)
     public bool isAttacking = false;
@@ -65,8 +65,10 @@ public abstract class Card : MonoBehaviour
         //find game manager
         gameManager = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>();
 
-        player_valid_defense_positions = GameObject.FindGameObjectsWithTag("Defense");
-        player_valid_attack_positions = GameObject.FindGameObjectsWithTag("Attack");
+        player_valid_defense_positions = GameObject.FindGameObjectsWithTag("PlayerDefense");
+        player_valid_attack_positions = GameObject.FindGameObjectsWithTag("PlayerAttack");
+        enemy_valid_defense_positions = GameObject.FindGameObjectsWithTag("EnemyDefense");
+        enemy_valid_attack_positions = GameObject.FindGameObjectsWithTag("EnemyAttack");
     }
 
     private void Update()
@@ -162,7 +164,7 @@ public abstract class Card : MonoBehaviour
                 transform.position = newPos;
                 position = _currentPos;
                 card_place.SetActive(false);
-                gameManager.PlayerFieldCards.Add(gameObject);
+                gameManager.PlayerFieldCards[placement] = gameObject;
             }
             else
             {

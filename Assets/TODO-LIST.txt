@@ -1,0 +1,5 @@
+ --- TODO LIST ---
+
+ mettere a posto il fatto che non funziona la collisione con mouse per poter trascinare la carta
+
+ finire il sistema di attacco
