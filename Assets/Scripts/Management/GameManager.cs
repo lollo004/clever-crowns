@@ -47,7 +47,7 @@ public class GameManager : MonoBehaviour
     public List<GameObject> PlayerHand = new List<GameObject>();
     public List<GameObject> EnemyHand = new List<GameObject>();
 
-    //dynamic array to store fields
+    //static array to store fields
     public GameObject[] PlayerFieldCards = new GameObject[9];
     public GameObject[] EnemyFieldCards = new GameObject[9];
 
@@ -100,7 +100,7 @@ public class GameManager : MonoBehaviour
 
         //DEBUG ENEMY
         GameObject newEnemy = (GameObject)Instantiate(Resources.Load("4"), enemy_canvas);
-        newEnemy.transform.localPosition = enemy_first_position.transform.localPosition;
+        newEnemy.transform.position = enemy_first_position.transform.position;
         enemy_first_position.SetActive(false);
         newEnemy.GetComponent<Card>().team = "enemy";
         newEnemy.GetComponent<Card>().position = "attack";
@@ -171,7 +171,10 @@ public class GameManager : MonoBehaviour
 
         for (int i = 0; i < PlayerFieldCards.Length; i++) //update things related to turn changing
         {
-            PlayerFieldCards[i].SendMessage("ChangeTurnAndPhase", new string[] {turn, phase});
+            if (PlayerFieldCards[i] != null)
+            {
+                PlayerFieldCards[i].SendMessage("ChangeTurnAndPhase", new string[] {turn, phase});
+            }
         }
     }
 

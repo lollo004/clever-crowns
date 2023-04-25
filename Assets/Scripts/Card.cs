@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public abstract class Card : MonoBehaviour
+public class Card : MonoBehaviour
 {
     //stats and description
     [SerializeField] public int Cost = 0; //cost of the card
@@ -46,7 +46,8 @@ public abstract class Card : MonoBehaviour
     public GameObject current_target;
 
     //watch a card
-    Collider2D OverlappingCollider;
+    public Collider2D OverlappingCollider;
+    public BoxCollider2D Card_Collider;
 
     //drag and drop
     private Vector2 difference = Vector2.zero;
@@ -108,7 +109,7 @@ public abstract class Card : MonoBehaviour
         {
             //drag and drop if the card is in your hand and you have enough lymph
             difference = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition) - (Vector2)transform.position;
-            start_position.x = transform.position.x;
+            start_position = transform.position;
 
             //attack with you card if you can
             if (position == "attack" && gameManager.phase == "attack")
@@ -164,14 +165,14 @@ public abstract class Card : MonoBehaviour
                 transform.position = newPos;
                 position = _currentPos;
                 card_place.SetActive(false);
-                gameManager.PlayerFieldCards[placement] = gameObject;
+                gameManager.PlayerFieldCards[placement-1] = gameObject;
             }
             else
             {
                 if (position == "hand")
                 {
-                    transform.localScale = new Vector2(1, 1.5f);
-                    transform.SetPositionAndRotation(new Vector2(start_position.x, -3.5f), transform.rotation);
+                    transform.localScale = new Vector2(1, 1);
+                    transform.SetPositionAndRotation(new Vector2(start_position.x, start_position.y), transform.rotation);
                 }
             }
 
@@ -202,7 +203,7 @@ public abstract class Card : MonoBehaviour
 
     }
 
-    private void OnCollisionStay2D(Collision2D collision)
+    private void OnTriggerStay2D(Collider2D collision)
     {
         card_place = collision.gameObject;
         try
@@ -228,7 +229,7 @@ public abstract class Card : MonoBehaviour
         catch { } // avoid the exception throwed on the 5th element of defense
     }
 
-    private void OnCollisionExit2D(Collision2D collision)
+    private void OnTriggerExit2D(Collider2D collision)
     {
         if (position == "hand" && !collision.gameObject.GetComponent<Card>())
         {
@@ -242,18 +243,20 @@ public abstract class Card : MonoBehaviour
         OverlappingCollider = Physics2D.OverlapPoint(Camera.main.ScreenToWorldPoint(Input.mousePosition));
         if (position == "hand" && OverlappingCollider.gameObject == gameObject)
         {
-            transform.localScale = new Vector2(2, 3);
-            transform.SetPositionAndRotation(new Vector2(transform.position.x, transform.position.y + 1.5f), transform.rotation);
+            transform.localScale = new Vector2(2, 2);
+            Card_Collider.size = new Vector2(40, 70);
+            transform.SetPositionAndRotation(new Vector2(transform.position.x, transform.position.y + 1.2f), transform.rotation);
         }
     }
-
+    
     private void OnMouseOver()
     {
         if (position == "hand" && OverlappingCollider.gameObject == gameObject)
         {
             if (isMoving)
-            {   
-                transform.localScale = new Vector2(1, 1.5f);
+            {
+                transform.localScale = new Vector2(1, 1);
+                Card_Collider.size = new Vector2(50, 75);
                 transform.SetPositionAndRotation((Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition), transform.rotation);
             }
         }
@@ -263,8 +266,9 @@ public abstract class Card : MonoBehaviour
     {
         if (position == "hand" && OverlappingCollider.gameObject == gameObject)
         {
-            transform.SetPositionAndRotation(new Vector2(transform.position.x, transform.position.y - 1.5f), transform.rotation);
-            transform.localScale = new Vector2(1, 1.5f);
+            transform.localScale = new Vector2(1, 1);
+            Card_Collider.size = new Vector2(50, 75);
+            transform.SetPositionAndRotation(new Vector2(transform.position.x, transform.position.y - 1.2f), transform.rotation);
         }
     }
 
