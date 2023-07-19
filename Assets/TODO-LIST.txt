@@ -3,5 +3,6 @@
 
 finire il sistema di attacco
 quando si sceglie play cancela tuttte le carte!
-mettere a posto i layer delle carte
 aggiusta la posizione della mano una volta che giochi la carta
+
+metti a posto contator Stress.

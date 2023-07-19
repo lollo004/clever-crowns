@@ -12,6 +12,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] public TextMeshProUGUI enemy_name;
     [SerializeField] public TextMeshProUGUI turn_text;
     [SerializeField] public TextMeshProUGUI phase_text;
+    [SerializeField] public TextMeshProUGUI lymph_text;
+    [SerializeField] public TextMeshProUGUI stress_text;
 
     //choose GUI
     [SerializeField] private GameObject choose_panel;
@@ -69,6 +71,8 @@ public class GameManager : MonoBehaviour
     public int enemyHandCards = 0; //number of card to give to the enemy at the start of the game
 
     //game stats
+    public int MaxLymph = 0;
+    public int MaxStress = 0;
     public int Lymph = 0;
     public int Stress = 0;
 
@@ -109,8 +113,11 @@ public class GameManager : MonoBehaviour
         //GUI update
         if (turn == "player" && phase == "defense") 
         {
-            choose_panel.SetActive(true);   
+            choose_panel.SetActive(true);
         }
+
+        Lymph = MaxLymph;
+        Stress = MaxStress;
     }
 
     private void FixedUpdate() //Update GUI and statistics
@@ -128,6 +135,8 @@ public class GameManager : MonoBehaviour
         enemy_life.text = EnemyLife.ToString();
         player_name.text = PlayerName.ToString();
         enemy_name.text = EnemyName.ToString();
+        lymph_text.text = "Lymph: " + Lymph.ToString();
+        stress_text.text = "Stress: " + Stress.ToString();
     }
 
     public void PassTurn()
@@ -145,6 +154,8 @@ public class GameManager : MonoBehaviour
                 phase = "defense";
                 phase_text.SetText("defense");
                 turn_text.SetText("enemy");
+                Lymph = MaxLymph;
+                Stress = MaxStress;
             }
         }
         else
@@ -160,6 +171,9 @@ public class GameManager : MonoBehaviour
                 phase = "defense";
                 phase_text.SetText("defense");
                 turn_text.SetText("player");
+                Lymph = MaxLymph;
+                Stress = MaxStress;
+
                 choose_panel.SetActive(true);
 
                 CheckCard();
@@ -222,6 +236,7 @@ public class GameManager : MonoBehaviour
     public void AddLymph() //async funct (button)
     {
         Lymph++;
+        MaxLymph++;
         choose_panel.SetActive(false);
         turn_type = "lymph";
     }
@@ -229,6 +244,7 @@ public class GameManager : MonoBehaviour
     public void AddStress() //async funct (button)
     {
         Stress++;
+        MaxStress++;
         choose_panel.SetActive(false);
         turn_type = "stress";
     }
@@ -250,7 +266,7 @@ public class GameManager : MonoBehaviour
     public void CheckLymph()
     {
         //if you reached the lymph limit you can't increase it anymore
-        if (Lymph >= 10)
+        if (MaxLymph >= 10)
         {
             button_lymph.GetComponent<Button>().enabled = false;
         }
@@ -262,7 +278,7 @@ public class GameManager : MonoBehaviour
     public void CheckStress()
     {
         //if you reached the stress limit you can't increase it anymore
-        if (Stress >= 5)
+        if (MaxStress >= 5)
         {
             button_stress.GetComponent<Button>().enabled = false;
         }

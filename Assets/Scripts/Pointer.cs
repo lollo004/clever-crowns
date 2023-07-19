@@ -4,6 +4,12 @@ public class Pointer : MonoBehaviour
 {
     //game manager
     public GameObject card;
+    private GameManager gameManager;
+
+    private void Start()
+    {
+        gameManager = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>();
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
